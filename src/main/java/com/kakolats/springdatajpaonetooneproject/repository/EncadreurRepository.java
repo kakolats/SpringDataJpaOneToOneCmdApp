@@ -6,10 +6,13 @@ import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
 
-public interface EncadreurRepository extends JpaRepository<Encadreur,Integer> {
+public interface EncadreurRepository extends JpaRepository<Encadreur, Integer> {
 
     public Encadreur findByNumero(Integer numero);
 
     @Query("select e from Encadreur e where e.etudiant is null")
     List<Encadreur> findAllByEtudiantIsNull();
+
+    @Query("select e from Encadreur e where e.etudiant is not null")
+    List<Encadreur> findAllByEtudiantIsNotNull();
 }

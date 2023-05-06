@@ -19,41 +19,50 @@ public class EncadreurService {
     private EtudiantRepository etuRepository;
 
     //CRUD ENCADREUR
-    public void createEncadreur(Encadreur encadreur){
-        encadRepository.save(encadreur);
+    public Encadreur createEncadreur(Encadreur encadreur) {
+        return encadRepository.save(encadreur);
     }
-    public void deleteEncadreur(Integer numero){
+
+    public void deleteEncadreur(Integer numero) {
         Encadreur encad = encadRepository.findByNumero(numero);
-        if (encad != null){
+        if (encad != null) {
             Etudiant etu = encad.getEtudiant();
-            if(etu != null){
+            if (etu != null) {
                 etu.setEncadreur(null);
                 etuRepository.save(etu);
             }
             encadRepository.delete(encad);
-        }else {
+        } else {
             System.out.println("Encadreur introuvable");
         }
     }
-    public void updateEncadreur(Encadreur encadreur){
-        Encadreur encad = encadRepository.findByNumero(encadreur.getNumero());
-        if (encad != null){
-            encad.setNom(encadreur.getNom());
-            encad.setPrenom(encadreur.getPrenom());
-            encad.setFonction(encadreur.getFonction());
-            if(encadreur.getEtudiant() != null){
-                encad.setEtudiant(encadreur.getEtudiant());
+
+    public Encadreur updateEncadreur(Encadreur encadreur) {
+        try {
+            Encadreur encad = encadRepository.findByNumero(encadreur.getNumero());
+            if (encad != null) {
+                encad.setNom(encadreur.getNom());
+                encad.setPrenom(encadreur.getPrenom());
+                encad.setFonction(encadreur.getFonction());
+                if (encadreur.getEtudiant() != null) {
+                    encad.setEtudiant(encadreur.getEtudiant());
+                }
+                return encadRepository.save(encad);
+            } else {
+                System.out.println("Encadreur introuvable");
             }
-            encadRepository.save(encad);
-        }else {
+        } catch (Exception e) {
             System.out.println("Encadreur introuvable");
         }
+        return null;
     }
-    public Encadreur rechercherEncadreur(Integer numero){
+
+    public Encadreur rechercherEncadreur(Integer numero) {
         Encadreur encad = encadRepository.findByNumero(numero);
         return encad;
     }
-    public List<Encadreur> rechercherTousEncadreur(){
+
+    public List<Encadreur> rechercherTousEncadreur() {
         return encadRepository.findAll();
     }
 
@@ -63,5 +72,9 @@ public class EncadreurService {
 
     public List<Encadreur> getAllEncadreursWithNoEtudiant() {
         return encadRepository.findAllByEtudiantIsNull();
+    }
+
+    public List<Encadreur> getAllEncadreursWithEtudiant() {
+        return encadRepository.findAllByEtudiantIsNotNull();
     }
 }

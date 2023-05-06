@@ -20,10 +20,10 @@ public class Encadreur implements Serializable {
     @Column(length = 255)
     private String fonction;
 
-    @OneToOne(mappedBy = "encadreur" ,cascade = CascadeType.ALL)
+    @OneToOne(mappedBy = "encadreur", cascade = CascadeType.ALL)
     private Etudiant etudiant;
 
-    public Encadreur(){
+    public Encadreur() {
     }
 
     public Integer getNumero() {
@@ -65,4 +65,6 @@ public class Encadreur implements Serializable {
     public void setEtudiant(Etudiant etudiant) {
         this.etudiant = etudiant;
     }
+
+
 }

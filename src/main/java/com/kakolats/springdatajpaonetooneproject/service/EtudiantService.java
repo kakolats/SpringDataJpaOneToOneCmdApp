@@ -87,4 +87,7 @@ public class EtudiantService {
     }
 
 
+    public List<Etudiant> getAllEtudiantWithNoEncadreur() {
+        return etuRepository.findAllEtudiantWithNoEncadreur();
+    }
 }
