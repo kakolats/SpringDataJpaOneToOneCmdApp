@@ -9,7 +9,8 @@ import java.io.Serializable;
 public class Etudiant implements Serializable {
 
     @Id
-    @Column
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "numero", nullable = false, unique = true)
     private Integer numero;
 
     @Column(length = 50)
@@ -22,10 +23,10 @@ public class Etudiant implements Serializable {
     private String theme;
 
     @OneToOne
-    @JoinColumn(name = "encadreur",referencedColumnName = "numero")
+    @JoinColumn(name = "encadreur", referencedColumnName = "numero", nullable = true)
     private Encadreur encadreur;
 
-    public Etudiant(){
+    public Etudiant() {
     }
 
     public Integer getNumero() {
@@ -66,5 +67,26 @@ public class Etudiant implements Serializable {
 
     public void setEncadreur(Encadreur encadreur) {
         this.encadreur = encadreur;
+    }
+
+    @Override
+    public String toString() {
+        return "Etudiant{" +
+                "numero=" + numero +
+                ", nom='" + nom + '\'' +
+                ", prenom='" + prenom + '\'' +
+                ", theme='" + theme + '\'' +
+                ", encadreur=" + encadreur +
+                '}';
+    }
+
+    public void afficher() {
+        System.out.println("Etudiant{" +
+                "numero=" + numero +
+                ", nom='" + nom + '\'' +
+                ", prenom='" + prenom + '\'' +
+                ", theme='" + theme + '\'' +
+                ", encadreur=" + encadreur +
+                '}');
     }
 }

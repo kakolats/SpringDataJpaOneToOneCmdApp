@@ -8,6 +8,8 @@ import com.kakolats.springdatajpaonetooneproject.repository.EtudiantRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class EncadreurService {
     @Autowired
@@ -50,5 +52,16 @@ public class EncadreurService {
     public Encadreur rechercherEncadreur(Integer numero){
         Encadreur encad = encadRepository.findByNumero(numero);
         return encad;
+    }
+    public List<Encadreur> rechercherTousEncadreur(){
+        return encadRepository.findAll();
+    }
+
+    public List<Encadreur> getAllEncadreurs() {
+        return encadRepository.findAll();
+    }
+
+    public List<Encadreur> getAllEncadreursWithNoEtudiant() {
+        return encadRepository.findAllByEtudiantIsNull();
     }
 }
