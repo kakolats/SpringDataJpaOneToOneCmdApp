@@ -9,6 +9,5 @@ import java.util.List;
 public interface EtudiantRepository extends JpaRepository<Etudiant, Integer> {
     public Etudiant findByNumero(Integer numero);
 
-    @Query("select e from Etudiant e where e.encadreur is null")
-    List<Etudiant> findAllEtudiantWithNoEncadreur();
+    List<Etudiant> findByEncadreurIsNull();
 }

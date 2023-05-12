@@ -10,9 +10,15 @@ public interface EncadreurRepository extends JpaRepository<Encadreur, Integer> {
 
     public Encadreur findByNumero(Integer numero);
 
+    /*
     @Query("select e from Encadreur e where e.etudiant is null")
     List<Encadreur> findAllByEtudiantIsNull();
 
     @Query("select e from Encadreur e where e.etudiant is not null")
-    List<Encadreur> findAllByEtudiantIsNotNull();
+    List<Encadreur> findAllByEtudiantIsNotNull();*/
+
+    List<Encadreur> findByEtudiantIsNull();
+
+    List<Encadreur> findByEtudiantIsNotNull();
+
 }

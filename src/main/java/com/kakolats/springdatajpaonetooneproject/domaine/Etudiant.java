@@ -10,7 +10,6 @@ public class Etudiant implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "numero", nullable = false, unique = true)
     private Integer numero;
 
     @Column(length = 50)
@@ -71,22 +70,22 @@ public class Etudiant implements Serializable {
 
     @Override
     public String toString() {
+        String value = "Etudiant{" +
+                "numero=" + numero +
+                ", nom='" + nom + '\'' +
+                ", prenom='" + prenom + '\'' +
+                ", theme='" + theme + '\''+
+                '}';
+        if(encadreur != null)
+            value += ", encadreur=" + encadreur.afficher();
+        return  value ;
+
+    }
+
+    public String afficher() {
         return "Etudiant{" +
                 "numero=" + numero +
                 ", nom='" + nom + '\'' +
-                ", prenom='" + prenom + '\'' +
-                ", theme='" + theme + '\'' +
-                ", encadreur=" + encadreur +
-                '}';
-    }
-
-    public void afficher() {
-        System.out.println("Etudiant{" +
-                "numero=" + numero +
-                ", nom='" + nom + '\'' +
-                ", prenom='" + prenom + '\'' +
-                ", theme='" + theme + '\'' +
-                ", encadreur=" + encadreur +
-                '}');
+                ", prenom='" + prenom + '}' ;
     }
 }

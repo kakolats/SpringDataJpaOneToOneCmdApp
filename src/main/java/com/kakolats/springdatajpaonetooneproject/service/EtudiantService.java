@@ -88,6 +88,6 @@ public class EtudiantService {
 
 
     public List<Etudiant> getAllEtudiantWithNoEncadreur() {
-        return etuRepository.findAllEtudiantWithNoEncadreur();
+        return etuRepository.findByEncadreurIsNull();
     }
 }

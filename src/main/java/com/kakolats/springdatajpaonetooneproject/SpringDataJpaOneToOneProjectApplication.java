@@ -30,19 +30,21 @@ public class SpringDataJpaOneToOneProjectApplication implements CommandLineRunne
         Scanner sc = new Scanner(System.in);
         int choix = 0;
         do {
-            System.out.println("1-Créer un étudiant");
-            System.out.println("2-Modifier un étudiant");
-            System.out.println("3-Supprimer un étudiant");
-            System.out.println("4-Affecter un encadreur à un étudiant");
-            System.out.println("5-Voir tous les étudiants");
-            System.out.println("6-Créer un encadreur");
-            System.out.println("7-Modifier un encadreur");
-            System.out.println("8-Supprimer un encadreur");
-            System.out.println("9-Affecter un encadreur à un étudiant");
-            System.out.println("10-Déssafecter un étudiant et un encadreur");
-            System.out.println("11-Voir la liste des encadreurs non affectés");
-            System.out.println("12-Voir tous les encadreurs");
-            System.out.println("13-Quitter");
+            System.out.println("1 - Créer un étudiant");
+            System.out.println("2 - Modifier un étudiant");
+            System.out.println("3 - Supprimer un étudiant");
+            System.out.println("4 - Rechercher un étudiant");
+            System.out.println("5 - Affecter un encadreur à un étudiant");
+            System.out.println("6 - Voir tous les étudiants");
+            System.out.println("7 - Créer un encadreur");
+            System.out.println("8 - Modifier un encadreur");
+            System.out.println("9 - Supprimer un encadreur");
+            System.out.println("10 - Rechercher un encadreur");
+            System.out.println("11 - Affecter un encadreur à un étudiant");
+            System.out.println("12 - Désaffecter un étudiant et un encadreur");
+            System.out.println("13 - Voir la liste des encadreurs non affectés");
+            System.out.println("14 - Voir tous les encadreurs");
+            System.out.println("15 - Quitter");
             choix = getIntegerInput(sc);
             sc.nextLine();
             switch (choix) {
@@ -55,12 +57,15 @@ public class SpringDataJpaOneToOneProjectApplication implements CommandLineRunne
                 case 2:
                     System.out.println("Liste des étudiants");
                     etuService.getAllEtudiant().forEach(System.out::println);
+                    System.out.println("-----------------------------------------------");
+
                     System.out.println("Veuillez entrer le numéro de l'étudiant à modifier");
                     int numero = getIntegerInput(sc);
+                    sc.nextLine();
                     Etudiant etudiant1 = etuService.rechercherEtudiant(numero);
                     if (etudiant1 != null) {
                         Etudiant etudToUpdate = editEtudiant(sc, etudiant1);
-                        //etuService.updateEtudiant(etudiant1);
+                        etuService.updateEtudiant(etudToUpdate);
                     } else {
                         System.out.println("Aucun étudiant trouvé avec ce numéro");
                     }
@@ -78,18 +83,41 @@ public class SpringDataJpaOneToOneProjectApplication implements CommandLineRunne
                     }
                     break;
                 case 4:
-                    System.out.println("Liste des étudiants");
-                    etuService.getAllEtudiant().forEach(System.out::println);
+                    System.out.println("Veuillez entrer le numéro de l'étudiant que vous recherchez");
+                    int num = getIntegerInput(sc);
+                    Etudiant etudiant4 = etuService.rechercherEtudiant(num);
+                    if (etudiant4 != null) {
+                        System.out.println("-----------------------------------------------");
+                        System.out.println(etudiant4);
+                        System.out.println("-----------------------------------------------");
+                    } else {
+                        System.out.println("Aucun étudiant trouvé avec ce numéro");
+                    }
+                    break;
+                case 5:
+                    System.out.println("Liste des étudiants non affectés");
+                    System.out.println("-----------------------------------------------");
+                    etuService.getAllEtudiantWithNoEncadreur().forEach(System.out::println);
+                    System.out.println("-----------------------------------------------");
+
                     System.out.println("Veuillez entrer le numéro de l'étudiant");
                     int numero2 = getIntegerInput(sc);
                     Etudiant etudiant3 = etuService.rechercherEtudiant(numero2);
                     if (etudiant3 != null) {
+                        if(etudiant3.getEncadreur() != null){
+                            System.out.println("Cet étudiant est déjà affecté à un encadreur");
+                            break;
+                        }
                         System.out.println("Liste des encadreurs non affectés");
                         this.encadService.getAllEncadreursWithNoEtudiant().forEach(System.out::println);
                         System.out.println("Veuillez entrer le numéro de l'encadreur");
                         int numero3 = getIntegerInput(sc);
                         Encadreur encadreur = encadService.rechercherEncadreur(numero3);
                         if (encadreur != null) {
+                            if(encadreur.getEtudiant() != null){
+                                System.out.println("Cet encadreur est déjà affecté à un étudiant");
+                                break;
+                            }
                             etudiant3.setEncadreur(encadreur);
                             etuService.updateEtudiant(etudiant3);
                         } else {
@@ -99,20 +127,24 @@ public class SpringDataJpaOneToOneProjectApplication implements CommandLineRunne
                         System.out.println("Aucun étudiant trouvé avec ce numéro");
                     }
                     break;
-                case 5:
-                    etuService.getAllEtudiant().forEach(System.out::println);
-                    break;
                 case 6:
+                    System.out.println("Liste des étudiants");
+                    System.out.println("-----------------------------------------------");
+                    etuService.getAllEtudiant().forEach(System.out::println);
+                    System.out.println("-----------------------------------------------");
+                    break;
+                case 7:
                     Encadreur encadreur = createEncadreur(sc);
                     encadreur = encadService.createEncadreur(encadreur);
                     System.out.println("Encadreur créé avec succès");
                     encadreur.toString();
                     break;
-                case 7:
+                case 8:
                     System.out.println("Liste des encadreurs");
                     encadService.getAllEncadreurs().forEach(System.out::println);
                     System.out.println("Veuillez entrer le numéro de l'encadreur à modifier");
                     int numero4 = getIntegerInput(sc);
+                    sc.nextLine();
                     Encadreur encadreur1 = encadService.rechercherEncadreur(numero4);
                     if (encadreur1 != null) {
                         Encadreur encadToUpdate = editEncadreur(sc, encadreur1);
@@ -123,7 +155,7 @@ public class SpringDataJpaOneToOneProjectApplication implements CommandLineRunne
                         System.out.println("Aucun encadreur trouvé avec ce numéro");
                     }
                     break;
-                case 8:
+                case 9:
                     System.out.println("Liste des encadreurs");
                     encadService.getAllEncadreurs().forEach(System.out::println);
                     System.out.println("Veuillez entrer le numéro de l'encadreur à supprimer");
@@ -135,21 +167,41 @@ public class SpringDataJpaOneToOneProjectApplication implements CommandLineRunne
                         System.out.println("Aucun encadreur trouvé avec ce numéro");
                     }
                     break;
-                case 9:
-                    System.out.println("Liste des encadreurs");
-                    encadService.getAllEncadreurs().forEach(System.out::println);
+                case 10:
+                    System.out.println("Veuillez entrer le numéro de l'encadreur à rechercher");
+                    int num1 = getIntegerInput(sc);
+                    Encadreur encadreur5 = encadService.rechercherEncadreur(num1);
+                    if (encadreur5 != null) {
+                        System.out.println("-----------------------------------------------");
+                        System.out.println(encadreur5);
+                        System.out.println("-----------------------------------------------");
+                    } else {
+                        System.out.println("Aucun encadreur trouvé avec ce numéro");
+                    }
+                    break;
+                case 11:
+                    System.out.println("Liste des encadreurs non affectés");
+                    encadService.getAllEncadreursWithNoEtudiant().forEach(System.out::println);
                     System.out.println("Veuillez entrer le numéro de l'encadreur");
                     int numero6 = getIntegerInput(sc);
                     Encadreur encadreur3 = encadService.rechercherEncadreur(numero6);
                     if (encadreur3 != null) {
+                        if (encadreur3.getEtudiant() != null) {
+                            System.out.println("Cet encadreur est déjà affecté à un étudiant");
+                            break;
+                        }
                         System.out.println("Liste des étudiants non affectés");
                         this.etuService.getAllEtudiantWithNoEncadreur().forEach(System.out::println);
                         System.out.println("Veuillez entrer le numéro de l'étudiant");
                         int numero7 = getIntegerInput(sc);
-                        Etudiant etudiant4 = etuService.rechercherEtudiant(numero7);
-                        if (etudiant4 != null) {
-                            encadreur3.setEtudiant(etudiant4);
-                            encadService.updateEncadreur(encadreur3);
+                        Etudiant etudiant5 = etuService.rechercherEtudiant(numero7);
+                        if (etudiant5 != null) {
+                            if (etudiant5.getEncadreur() != null) {
+                                System.out.println("Cet étudiant est déjà affecté à un encadreur");
+                                break;
+                            }
+                            etudiant5.setEncadreur(encadreur3);
+                            etuService.updateEtudiant(etudiant5);
                         } else {
                             System.out.println("Aucun étudiant trouvé avec ce numéro");
                         }
@@ -157,32 +209,39 @@ public class SpringDataJpaOneToOneProjectApplication implements CommandLineRunne
                         System.out.println("Aucun encadreur trouvé avec ce numéro");
                     }
                     break;
-                case 10:
-                    //10- Déssafecter un étudiant et un encadreur
-                    System.out.println("Liste des encadreurs");
+                case 12:
+                    //12- Déssafecter un étudiant et un encadreur
+                    System.out.println("Liste des encadreurs avec un étudiant");
+                    System.out.println("-----------------------------------------------");
                     encadService.getAllEncadreursWithEtudiant().forEach(System.out::println);
+                    System.out.println("-----------------------------------------------");
+
                     System.out.println("Veuillez entrer le numéro de l'encadreur");
                     int numero8 = getIntegerInput(sc);
                     Encadreur encadreur4 = encadService.rechercherEncadreur(numero8);
                     if (encadreur4 != null) {
-                        encadreur4.setEtudiant(null);
-                        encadService.updateEncadreur(encadreur4);
+                        if (encadreur4.getEtudiant() == null) {
+                            System.out.println("Cet encadreur n'est pas affecté à un étudiant");
+                            break;
+                        }
+                        Etudiant etudiant6 = encadreur4.getEtudiant();
+                        etuService.desaffectEncadeur(etudiant6.getNumero());
                     } else {
                         System.out.println("Aucun encadreur trouvé avec ce numéro");
                     }
                     break;
-                case 11:
-                    //11- Voir la liste des encadreurs non affectés
+                case 13:
+                    //13- Voir la liste des encadreurs non affectés
                     System.out.println("Liste des encadreurs non affectés");
                     encadService.getAllEncadreursWithNoEtudiant().forEach(System.out::println);
                     break;
-                case 12:
-                    //12- Voir tous les encadreurs
+                case 14:
+                    //14- Voir tous les encadreurs
                     System.out.println("Liste des encadreurs");
                     encadService.getAllEncadreurs().forEach(System.out::println);
                     break;
             }
-        } while (choix != 13);
+        } while (choix != 15);
     }
 
 
@@ -237,12 +296,12 @@ public class SpringDataJpaOneToOneProjectApplication implements CommandLineRunne
 
     private static Etudiant editEtudiant(Scanner sc, Etudiant etudiant1) {
         System.out.println("Veuillez entrer le nouveau nom");
-        String name = getStringInput(sc);
+        String nom = getStringInput(sc);
         System.out.println("Veuillez entrer le nouveau prénom");
         String prenom = getStringInput(sc);
         System.out.println("Veuillez entrer le nouveau thème");
         String theme = getStringInput(sc);
-        etudiant1.setNom(name);
+        etudiant1.setNom(nom);
         etudiant1.setPrenom(prenom);
         etudiant1.setTheme(theme);
         return etudiant1;

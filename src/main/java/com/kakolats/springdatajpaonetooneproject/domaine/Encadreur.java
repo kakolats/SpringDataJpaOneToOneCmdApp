@@ -9,6 +9,7 @@ import java.io.Serializable;
 public class Encadreur implements Serializable {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer numero;
 
     @Column(length = 50)
@@ -66,5 +67,23 @@ public class Encadreur implements Serializable {
         this.etudiant = etudiant;
     }
 
+    @Override
+    public String toString() {
+        String value  = "Encadreur{" +
+                "numero=" + numero +
+                ", nom='" + nom + '\'' +
+                ", prenom='" + prenom + '\'' +
+                ", fonction='" + fonction + '\''+
+                '}';
+        if (etudiant != null)
+            value += ", etudiant=" + etudiant.afficher();
+        return value;
 
+    }
+     public String afficher() {
+         return "Encadreur{" +
+             "numero=" + numero +
+             ", nom='" + nom + '\'' +
+             ", prenom='" + prenom + '\'' +'}';
+     }
 }

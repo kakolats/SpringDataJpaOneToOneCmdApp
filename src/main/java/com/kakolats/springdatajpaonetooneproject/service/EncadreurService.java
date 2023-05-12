@@ -71,10 +71,10 @@ public class EncadreurService {
     }
 
     public List<Encadreur> getAllEncadreursWithNoEtudiant() {
-        return encadRepository.findAllByEtudiantIsNull();
+        return encadRepository.findByEtudiantIsNull();
     }
 
     public List<Encadreur> getAllEncadreursWithEtudiant() {
-        return encadRepository.findAllByEtudiantIsNotNull();
+        return encadRepository.findByEtudiantIsNotNull();
     }
 }
