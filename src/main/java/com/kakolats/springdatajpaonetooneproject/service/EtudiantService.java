@@ -31,6 +31,7 @@ public class EtudiantService {
                 encadRepository.save(encad);
             }
             etu.setEncadreur(null);
+            etuRepository.save(etu);
             etuRepository.delete(etu);
         } else {
             System.out.println("Etudiant introuvable");
