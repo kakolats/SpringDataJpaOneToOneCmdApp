@@ -30,6 +30,7 @@ public class EtudiantService {
                 encad.setEtudiant(null);
                 encadRepository.save(encad);
             }
+            etu.setEncadreur(null);
             etuRepository.delete(etu);
         } else {
             System.out.println("Etudiant introuvable");
@@ -41,6 +42,7 @@ public class EtudiantService {
         if (etu != null) {
             etu.setNom(etudiant.getNom());
             etu.setPrenom(etudiant.getPrenom());
+            etu.setTheme(etudiant.getTheme());
             if (etudiant.getEncadreur() != null) {
                 etu.setEncadreur(etudiant.getEncadreur());
             }

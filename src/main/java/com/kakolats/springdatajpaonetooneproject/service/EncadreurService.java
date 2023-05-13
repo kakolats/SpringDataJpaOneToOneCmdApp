@@ -31,6 +31,7 @@ public class EncadreurService {
                 etu.setEncadreur(null);
                 etuRepository.save(etu);
             }
+            encad.setEtudiant(null);
             encadRepository.delete(encad);
         } else {
             System.out.println("Encadreur introuvable");
